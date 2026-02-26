@@ -7,7 +7,7 @@
     "dev": "tsx server/server.ts",
     "dev:next": "next dev",
     "build:widgets": "cd web && npm run build",
-    "build": "cd web && npm install && npm run build && next build",
+    "build": "cd web && npm install && npm run build && cd .. && next build",
     "start": "next start"
   },
   "dependencies": {

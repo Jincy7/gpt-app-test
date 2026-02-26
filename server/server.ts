@@ -35,6 +35,26 @@ const USAGE_URI = "ui://t-ai/usage.html";
 const BILL_URI = "ui://t-ai/bill.html";
 const PLAN_URI = "ui://t-ai/plan.html";
 
+const WIDGET_DOMAIN =
+  process.env.WIDGET_DOMAIN ?? "http://localhost:8787";
+
+const WIDGET_UI_META = {
+  ui: {
+    prefersBorder: true,
+    domain: WIDGET_DOMAIN,
+    csp: {
+      connectDomains: [] as string[],
+      resourceDomains: [] as string[],
+    },
+  },
+};
+
+const READONLY_ANNOTATIONS = {
+  readOnlyHint: true as const,
+  openWorldHint: false as const,
+  destructiveHint: false as const,
+};
+
 function createTelecomServer(): McpServer {
   const server = new McpServer({
     name: "t-ai-assistant",
@@ -53,6 +73,7 @@ function createTelecomServer(): McpServer {
           uri: USAGE_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: readWidget("usage-widget"),
+          _meta: WIDGET_UI_META,
         },
       ],
     })
@@ -69,6 +90,7 @@ function createTelecomServer(): McpServer {
           uri: BILL_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: readWidget("bill-widget"),
+          _meta: WIDGET_UI_META,
         },
       ],
     })
@@ -85,6 +107,7 @@ function createTelecomServer(): McpServer {
           uri: PLAN_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: readWidget("plan-widget"),
+          _meta: WIDGET_UI_META,
         },
       ],
     })
@@ -98,6 +121,7 @@ function createTelecomServer(): McpServer {
       title: "사용량 조회",
       description:
         "현재 요금제의 데이터, 음성통화, 문자 사용량과 잔여량을 조회합니다. 사용자가 데이터 사용량, 남은 데이터, 통화량 등을 물어볼 때 사용하세요.",
+      annotations: READONLY_ANNOTATIONS,
       _meta: {
         ui: { resourceUri: USAGE_URI },
       },
@@ -133,6 +157,7 @@ function createTelecomServer(): McpServer {
           .optional()
           .describe("조회할 월 (예: '2026년 2월'). 생략 시 이번 달"),
       },
+      annotations: READONLY_ANNOTATIONS,
       _meta: {
         ui: { resourceUri: BILL_URI },
       },
@@ -158,6 +183,7 @@ function createTelecomServer(): McpServer {
       title: "요금제 추천",
       description:
         "현재 사용 패턴을 분석하여 최적의 요금제 3개를 추천합니다. 사용자가 요금제 변경, 더 저렴한 요금제, 요금제 추천 등을 물어볼 때 사용하세요.",
+      annotations: READONLY_ANNOTATIONS,
       _meta: {
         ui: { resourceUri: PLAN_URI },
       },
@@ -197,6 +223,7 @@ function createTelecomServer(): McpServer {
             `여행할 국가 이름 (한국어). 지원 국가: ${getAvailableCountries().join(", ")}`
           ),
       },
+      annotations: READONLY_ANNOTATIONS,
       _meta: {},
     },
     async ({ country }: { country: string }) => {

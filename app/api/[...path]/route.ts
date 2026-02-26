@@ -18,6 +18,29 @@ const USAGE_URI = "ui://t-ai/usage.html";
 const BILL_URI = "ui://t-ai/bill.html";
 const PLAN_URI = "ui://t-ai/plan.html";
 
+const WIDGET_DOMAIN =
+  process.env.WIDGET_DOMAIN ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://t-ai-assistant.vercel.app");
+
+const WIDGET_UI_META = {
+  ui: {
+    prefersBorder: true,
+    domain: WIDGET_DOMAIN,
+    csp: {
+      connectDomains: [] as string[],
+      resourceDomains: [] as string[],
+    },
+  },
+};
+
+const READONLY_ANNOTATIONS = {
+  readOnlyHint: true as const,
+  openWorldHint: false as const,
+  destructiveHint: false as const,
+};
+
 function getWidgetHtml(name: string): string {
   try {
     const fs = require("fs");
@@ -42,6 +65,7 @@ const handler = createMcpHandler(
             uri: USAGE_URI,
             mimeType: RESOURCE_MIME_TYPE,
             text: getWidgetHtml("usage-widget"),
+            _meta: WIDGET_UI_META,
           },
         ],
       })
@@ -58,6 +82,7 @@ const handler = createMcpHandler(
             uri: BILL_URI,
             mimeType: RESOURCE_MIME_TYPE,
             text: getWidgetHtml("bill-widget"),
+            _meta: WIDGET_UI_META,
           },
         ],
       })
@@ -74,6 +99,7 @@ const handler = createMcpHandler(
             uri: PLAN_URI,
             mimeType: RESOURCE_MIME_TYPE,
             text: getWidgetHtml("plan-widget"),
+            _meta: WIDGET_UI_META,
           },
         ],
       })
@@ -86,6 +112,7 @@ const handler = createMcpHandler(
         title: "사용량 조회",
         description:
           "현재 요금제의 데이터, 음성통화, 문자 사용량과 잔여량을 조회합니다.",
+        annotations: READONLY_ANNOTATIONS,
         _meta: { ui: { resourceUri: USAGE_URI } },
       },
       async () => {
@@ -111,6 +138,7 @@ const handler = createMcpHandler(
         inputSchema: {
           month: z.string().optional().describe("조회할 월"),
         },
+        annotations: READONLY_ANNOTATIONS,
         _meta: { ui: { resourceUri: BILL_URI } },
       },
       async ({ month }: { month?: string }) => {
@@ -134,6 +162,7 @@ const handler = createMcpHandler(
       {
         title: "요금제 추천",
         description: "사용 패턴 기반 최적 요금제를 추천합니다.",
+        annotations: READONLY_ANNOTATIONS,
         _meta: { ui: { resourceUri: PLAN_URI } },
       },
       async () => {
@@ -165,6 +194,7 @@ const handler = createMcpHandler(
             .string()
             .describe(`국가명 (${getAvailableCountries().join(", ")})`),
         },
+        annotations: READONLY_ANNOTATIONS,
         _meta: {},
       },
       async ({ country }: { country: string }) => {

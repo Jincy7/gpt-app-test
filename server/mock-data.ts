@@ -116,7 +116,7 @@ export function getBillData(month?: string): BillData {
       { label: "부가서비스", amount: 4400, description: "컬러링 + 클라우드 5GB" },
       { label: "할부금", amount: 28600, description: "Galaxy S25 Ultra (18/24개월)" },
       { label: "약정 할인", amount: -15000, description: "24개월 약정 할인" },
-      { label: "멤버십 할인", amount: -4800, description: "T멤버십 VIP 할인" },
+      { label: "멤버십 할인", amount: -4800, description: "J멤버십 VIP 할인" },
     ],
     paymentDate: "2026년 3월 10일",
     paymentMethod: "신한카드 ****-1234 자동결제",
@@ -140,7 +140,7 @@ export function getPlanRecommendation(): PlanRecommendation {
         sms: "무제한",
         savingAmount: 10000,
         badge: "절약 추천",
-        features: ["데이터 소진 후 1Mbps", "T멤버십 골드"],
+        features: ["데이터 소진 후 1Mbps", "J멤버십 골드"],
       },
       {
         id: "plan-2",
@@ -151,7 +151,7 @@ export function getPlanRecommendation(): PlanRecommendation {
         sms: "무제한",
         savingAmount: 0,
         badge: "인기",
-        features: ["데이터 소진 후 3Mbps", "T멤버십 VIP", "해외 로밍 데이터 2GB 포함"],
+        features: ["데이터 소진 후 3Mbps", "J멤버십 VIP", "해외 로밍 데이터 2GB 포함"],
       },
       {
         id: "plan-3",
@@ -164,7 +164,7 @@ export function getPlanRecommendation(): PlanRecommendation {
         badge: "프리미엄",
         features: [
           "데이터 완전 무제한",
-          "T멤버십 VIP+",
+          "J멤버십 VIP+",
           "해외 로밍 데이터 5GB 포함",
           "구독 서비스 2종 무료",
         ],

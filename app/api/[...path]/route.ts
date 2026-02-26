@@ -14,15 +14,16 @@ import {
   getAvailableCountries,
 } from "../../lib/mock-data";
 
-const USAGE_URI = "ui://t-ai/usage.html";
-const BILL_URI = "ui://t-ai/bill.html";
-const PLAN_URI = "ui://t-ai/plan.html";
+const USAGE_URI = "ui://j-ai/usage.html";
+const BILL_URI = "ui://j-ai/bill.html";
+const PLAN_URI = "ui://j-ai/plan.html";
+const ROAMING_URI = "ui://j-ai/roaming.html";
 
 const WIDGET_DOMAIN =
   process.env.WIDGET_DOMAIN ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://t-ai-assistant.vercel.app");
+    : "https://j-ai-assistant.vercel.app");
 
 const WIDGET_UI_META = {
   ui: {
@@ -99,6 +100,23 @@ const handler = createMcpHandler(
             uri: PLAN_URI,
             mimeType: RESOURCE_MIME_TYPE,
             text: getWidgetHtml("plan-widget"),
+            _meta: WIDGET_UI_META,
+          },
+        ],
+      })
+    );
+
+    registerAppResource(
+      server,
+      "해외 로밍 안내",
+      ROAMING_URI,
+      { description: "국가별 해외 로밍 요금 및 패키지 안내 위젯" },
+      async () => ({
+        contents: [
+          {
+            uri: ROAMING_URI,
+            mimeType: RESOURCE_MIME_TYPE,
+            text: getWidgetHtml("roaming-widget"),
             _meta: WIDGET_UI_META,
           },
         ],
@@ -195,7 +213,7 @@ const handler = createMcpHandler(
             .describe(`국가명 (${getAvailableCountries().join(", ")})`),
         },
         annotations: READONLY_ANNOTATIONS,
-        _meta: {},
+        _meta: { ui: { resourceUri: ROAMING_URI } },
       },
       async ({ country }: { country: string }) => {
         const roaming = getRoamingData(country);
@@ -221,7 +239,7 @@ const handler = createMcpHandler(
       }
     );
   },
-  { serverInfo: { name: "t-ai-assistant", version: "0.1.0" } },
+  { serverInfo: { name: "j-ai-assistant", version: "0.1.0" } },
   { basePath: "/api", disableSse: true }
 );
 

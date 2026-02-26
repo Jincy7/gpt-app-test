@@ -52,7 +52,7 @@ window.addEventListener(
 export async function initBridge() {
   try {
     await rpcRequest("ui/initialize", {
-      appInfo: { name: "t-ai-assistant", version: "0.1.0" },
+      appInfo: { name: "j-ai-assistant", version: "0.1.0" },
       appCapabilities: {},
       protocolVersion: "2026-01-26",
     });

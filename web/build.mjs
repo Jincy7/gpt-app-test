@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isWatch = process.argv.includes("--watch");
 
-const widgets = ["usage-widget", "bill-widget", "plan-widget"];
+const widgets = ["usage-widget", "bill-widget", "plan-widget", "roaming-widget"];
 
 async function build() {
   for (const widget of widgets) {

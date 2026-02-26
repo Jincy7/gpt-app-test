@@ -31,9 +31,10 @@ function readWidget(name: string): string {
   return `<html><body><p>${name} widget not built yet. Run: cd web && npm run build</p></body></html>`;
 }
 
-const USAGE_URI = "ui://t-ai/usage.html";
-const BILL_URI = "ui://t-ai/bill.html";
-const PLAN_URI = "ui://t-ai/plan.html";
+const USAGE_URI = "ui://j-ai/usage.html";
+const BILL_URI = "ui://j-ai/bill.html";
+const PLAN_URI = "ui://j-ai/plan.html";
+const ROAMING_URI = "ui://j-ai/roaming.html";
 
 const WIDGET_DOMAIN =
   process.env.WIDGET_DOMAIN ?? "http://localhost:8787";
@@ -57,7 +58,7 @@ const READONLY_ANNOTATIONS = {
 
 function createTelecomServer(): McpServer {
   const server = new McpServer({
-    name: "t-ai-assistant",
+    name: "j-ai-assistant",
     version: "0.1.0",
   });
 
@@ -107,6 +108,23 @@ function createTelecomServer(): McpServer {
           uri: PLAN_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: readWidget("plan-widget"),
+          _meta: WIDGET_UI_META,
+        },
+      ],
+    })
+  );
+
+  registerAppResource(
+    server,
+    "해외 로밍 안내",
+    ROAMING_URI,
+    { description: "국가별 해외 로밍 요금 및 패키지 안내 위젯" },
+    async () => ({
+      contents: [
+        {
+          uri: ROAMING_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: readWidget("roaming-widget"),
           _meta: WIDGET_UI_META,
         },
       ],
@@ -224,7 +242,7 @@ function createTelecomServer(): McpServer {
           ),
       },
       annotations: READONLY_ANNOTATIONS,
-      _meta: {},
+      _meta: { ui: { resourceUri: ROAMING_URI } },
     },
     async ({ country }: { country: string }) => {
       const roaming = getRoamingData(country);
@@ -288,7 +306,7 @@ const httpServer = createServer(
     if (req.method === "GET" && url.pathname === "/") {
       res
         .writeHead(200, { "content-type": "text/plain; charset=utf-8" })
-        .end("T-AI 어시스턴트 MCP Server");
+        .end("J-AI 어시스턴트 MCP Server");
       return;
     }
 
@@ -330,6 +348,6 @@ const httpServer = createServer(
 
 httpServer.listen(port, () => {
   console.log(
-    `T-AI 어시스턴트 MCP 서버가 http://localhost:${port}${MCP_PATH} 에서 실행 중입니다`
+    `J-AI 어시스턴트 MCP 서버가 http://localhost:${port}${MCP_PATH} 에서 실행 중입니다`
   );
 });

@@ -1,0 +1,27 @@
+{
+  "name": "t-ai-assistant",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsx server/server.ts",
+    "dev:next": "next dev",
+    "build:widgets": "cd web && npm run build",
+    "build": "cd web && npm install && npm run build && next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.0.1",
+    "@modelcontextprotocol/sdk": "^1.20.2",
+    "mcp-handler": "^1.0.7",
+    "next": "^16.1.6",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
